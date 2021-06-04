@@ -103,21 +103,7 @@ class _ItemPostState extends State<ItemPost> with TickerProviderStateMixin {
                     children: [
                       GestureDetector(
                         onDoubleTap: () {
-                          if (!widget.post.isLike) {
-                            context
-                                .read<PostProvider>()
-                                .incrementLike(widget.post);
-                            context
-                                .read<PostProvider>()
-                                .likePost(context, widget.post);
-                          } else {
-                            context
-                                .read<PostProvider>()
-                                .decrementLike(widget.post);
-                            context
-                                .read<PostProvider>()
-                                .unlikePost(context, widget.post);
-                          }
+                          doLike(context);
 
                           _controller.forward();
                           setState(() {
@@ -194,7 +180,9 @@ class _ItemPostState extends State<ItemPost> with TickerProviderStateMixin {
                         width: 18.w(),
                         height: 18.w(),
                         color: widget.post.isLike ? Themes.red : null,
-                      ).addMarginLeft(14.w()),
+                      ).addMarginLeft(14.w()).onTap(() {
+                        doLike(context);
+                      }),
                     ],
                   ),
                   if (widget.post.likers.length > 10)
@@ -222,7 +210,7 @@ class _ItemPostState extends State<ItemPost> with TickerProviderStateMixin {
                       "See all ${widget.post.totalComment} comments",
                       style: Themes().gray14,
                     ),
-                  if (widget.post.totalLike > 0)
+                  if (widget.post.totalComment > 0)
                     Column(
                       children: (widget.post.totalComment > 3
                               ? widget.post.comment.sublist(0, 3)
@@ -276,5 +264,15 @@ class _ItemPostState extends State<ItemPost> with TickerProviderStateMixin {
         Line(),
       ],
     );
+  }
+
+  void doLike(BuildContext context) {
+    if (!widget.post.isLike) {
+      context.read<PostProvider>().incrementLike(widget.post);
+      context.read<PostProvider>().likePost(context, widget.post);
+    } else {
+      context.read<PostProvider>().decrementLike(widget.post);
+      context.read<PostProvider>().unlikePost(context, widget.post);
+    }
   }
 }
