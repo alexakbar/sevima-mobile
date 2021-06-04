@@ -10,6 +10,7 @@ import 'package:sevgram/data/services/entities/login_response.dart';
 import 'package:sevgram/r.dart';
 import 'package:sevgram/ui/home/pages/home_page.dart';
 import 'package:sevgram/ui/home/pages/profile_page.dart';
+import 'package:sevgram/ui/home/post/create_post_screen.dart';
 import 'package:sevgram/ui/login/login_screen.dart';
 import 'package:sevgram/utils/responsive.dart';
 import 'package:sevgram/utils/themes.dart';
@@ -106,7 +107,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 border: Border.all(color: Themes.primary),
                 color: Themes.white,
                 padding: EdgeInsets.all(8.w()),
-                onTap: () {},
+                onTap: () {Tools.navigatePush(context, CreatePostScreen());},
                 child: Icon(
                   Icons.add_rounded,
                   size: 24.f(),

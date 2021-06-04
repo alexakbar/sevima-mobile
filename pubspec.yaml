@@ -35,6 +35,9 @@ dependencies:
   pull_to_refresh: ^2.0.0
   shared_preferences: ^2.0.6
   webview_flutter: ^2.0.8
+  badges: ^2.0.1
+  image_picker: ^0.8.0+1
+  permission_handler: ^8.0.1
 
 dev_dependencies:
   flutter_test:

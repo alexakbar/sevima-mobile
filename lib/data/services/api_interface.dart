@@ -138,4 +138,23 @@ class ApiInterface {
       onOffline: onOffline,
     );
   }
+
+  void addPost({
+    var body,
+    var header,
+    var files,
+    VoidCallback onRequestTimeOut,
+    Function(dynamic error, StreamedResponse response) onUnhandleError,
+    Function(StreamedResponse response) onFinish,
+  }) {
+    apiHelper.multipartPost(
+      route: "post/store",
+      body: body,
+      files: files,
+      header: header,
+      onFinish: onFinish,
+      onRequestTimeOut: onRequestTimeOut,
+      onUnhandleError: onUnhandleError,
+    );
+  }
 }

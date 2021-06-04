@@ -3,6 +3,8 @@ class AssetIcons {
 	static final String icLove = 'assets/icons/ic_love.svg';
 	static final String icLoveFilled = 'assets/icons/ic_love_filled.svg';
 	static final String tapLove = 'assets/icons/tap_love.svg';
+	static final String icCross = 'assets/icons/ic_cross.svg';
+  static final String icCameraPlus = 'assets/icons/ic_camera_plus.svg';
 }
 
 class AssetImages {
