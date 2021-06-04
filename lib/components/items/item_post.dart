@@ -241,9 +241,7 @@ class _ItemPostState extends State<ItemPost> with TickerProviderStateMixin {
                         ),
                         child: Center(
                           child: Text(
-                            widget.post.user.fullname
-                                .substring(0, 1)
-                                .toUpperCase(),
+                            user.fullname.substring(0, 1).toUpperCase(),
                             style: Themes().whiteBold14,
                           ),
                         ),
