@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:sevgram/data/providers/post_provider.dart';
 import 'package:sevgram/data/providers/token_provider.dart';
 import 'package:sevgram/data/providers/user_provider.dart';
+import 'package:sevgram/ui/home/home_screen.dart';
 import 'package:sevgram/ui/login/login_screen.dart';
 import 'package:sevgram/ui/spashscreen/spash_screen.dart';
 
@@ -27,7 +28,8 @@ class MyApp extends StatelessWidget {
       title: 'SevGram',
       routes: {
         '/login': (context) => LoginScreen(),
-      },
+        '/home' : (context) => HomeScreen(),
+       },
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.blue,

@@ -30,6 +30,25 @@ class ApiInterface {
     );
   }
 
+  void doRegister({
+    var body,
+    var header,
+    VoidCallback onRequestTimeOut,
+    Function(dynamic error, Response response) onUnhandleError,
+    Function(Response response) onFinish,
+    Function() onOffline,
+  }) {
+    apiHelper.post(
+      route: "register",
+      body: body,
+      header: header,
+      onFinish: onFinish,
+      onRequestTimeOut: onRequestTimeOut,
+      onUnhandleError: onUnhandleError,
+      onOffline: onOffline,
+    );
+  }
+
   void doLikePost({
     var body,
     var header,

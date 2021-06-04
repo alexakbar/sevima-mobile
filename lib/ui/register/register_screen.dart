@@ -13,31 +13,36 @@ import 'package:sevgram/data/providers/user_provider.dart';
 import 'package:sevgram/data/services/api_interface.dart';
 import 'package:sevgram/data/services/entities/login_response.dart';
 import 'package:sevgram/ui/home/home_screen.dart';
-import 'package:sevgram/ui/register/register_screen.dart';
 import 'package:sevgram/utils/responsive.dart';
 import 'package:sevgram/utils/themes.dart';
 import 'package:sevgram/utils/tools.dart';
 import 'package:sevgram/utils/widget_helper.dart';
 
-class LoginScreen extends StatefulWidget {
-  LoginScreen({Key key}) : super(key: key);
+class RegisterScreen extends StatefulWidget {
+  RegisterScreen({Key key}) : super(key: key);
 
   @override
-  _LoginScreenState createState() => _LoginScreenState();
+  _RegisterScreenState createState() => _RegisterScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _RegisterScreenState extends State<RegisterScreen> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  TextEditingController usernameController = TextEditingController();
+  TextEditingController fullnameController = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
   bool enableButton = false;
   ApiInterface apiInterface;
 
-  void doLogin() {
+  void doRegister() {
     var body = Map();
     body["email"] = emailController.text;
+    body["username"] = usernameController.text;
+    body["fullname"] = fullnameController.text;
     body["password"] = passwordController.text;
+    body["phone"] = phoneController.text;
 
-    apiInterface.doLogin(
+    apiInterface.doRegister(
       body: body,
       onFinish: (response) {
         if (response.statusCode == 200) {
@@ -61,7 +66,7 @@ class _LoginScreenState extends State<LoginScreen> {
             context.read<TokenProvider>().saveToken(loginResponse.token);
             context.read<UserProvider>().loadNetworkUser(context, onFinish: () {
               Navigator.pop(context);
-              Tools.navigateReplace(context, HomeScreen());
+              Tools.navigateRefresh(context, HomeScreen(), "/home");
             });
           }
         } else {
@@ -87,8 +92,10 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void onTextChange() {
     setState(() {
-      enableButton =
-          emailController.text.isNotEmpty && passwordController.text.isNotEmpty;
+      enableButton = emailController.text.isNotEmpty &&
+          passwordController.text.isNotEmpty &&
+          fullnameController.text.isNotEmpty &&
+          usernameController.text.isNotEmpty;
     });
   }
 
@@ -138,17 +145,29 @@ class _LoginScreenState extends State<LoginScreen> {
                 vertical: 18.h(),
               ),
               Text(
-                "Welcome Back",
+                "Sign Up",
                 style: Themes().primaryBold22.withSize(36),
               ).addMarginTop(12.h()),
               Text(
-                "Sign in to continue",
+                "Sign Up to create an account",
                 style: Themes().gray14,
               ),
               TextArea(
+                controller: fullnameController,
+                hint: "input fullname",
+              ).addMarginTop(56.h()),
+              TextArea(
+                controller: usernameController,
+                hint: "input username",
+              ).addMarginTop(14.h()),
+              TextArea(
                 controller: emailController,
                 hint: "input email",
-              ).addMarginTop(56.h()),
+              ).addMarginTop(14.h()),
+              TextArea(
+                controller: phoneController,
+                hint: "input phone",
+              ).addMarginTop(14.h()),
               PasswordTextarea(
                 controller: passwordController,
                 hint: "input password",
@@ -157,13 +176,13 @@ class _LoginScreenState extends State<LoginScreen> {
                 enable: enableButton,
                 onTap: () {
                   Tools.showProgressDialog(context);
-                  doLogin();
+                  doRegister();
                 },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "Sign In",
+                      "Sign Up",
                       style: Themes().white14,
                     ),
                     Icon(
@@ -171,19 +190,6 @@ class _LoginScreenState extends State<LoginScreen> {
                       color: Themes.white,
                     ),
                   ],
-                ),
-              ).addMarginTop(14.h()),
-              PrimaryButton(
-                elevateButtonOnTap: false,
-                color: Themes.transparent,
-                onTap: () {
-                  Tools.navigatePush(context, RegisterScreen());
-                },
-                child: Center(
-                  child: Text(
-                    "Create Account",
-                    style: Themes().primaryBold14,
-                  ),
                 ),
               ).addMarginTop(14.h()),
             ],
