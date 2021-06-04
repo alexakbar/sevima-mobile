@@ -5,6 +5,8 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:sevgram/components/items/item_post.dart';
 import 'package:sevgram/data/providers/post_provider.dart';
 import 'package:sevgram/data/services/entities/posts_response.dart';
+import 'package:sevgram/ui/comment/comment_screen.dart';
+import 'package:sevgram/utils/tools.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key key}) : super(key: key);
@@ -59,8 +61,23 @@ class _HomePageState extends State<HomePage> {
                   Post post = posts[index];
 
                   return ItemPost(
-                    onTapAddComment: () {},
-                    onTapComment: () {},
+                    onTapAddComment: () {
+                      Tools.navigatePush(
+                        context,
+                        CommentScreen(
+                          post: post,
+                          autofocus: true,
+                        ),
+                      );
+                    },
+                    onTapComment: () {
+                      Tools.navigatePush(
+                        context,
+                        CommentScreen(
+                          post: post,
+                        ),
+                      );
+                    },
                     post: post,
                   );
                 },

@@ -212,7 +212,7 @@ class _ItemPostState extends State<ItemPost> with TickerProviderStateMixin {
                     ),
                   if (widget.post.totalComment > 0)
                     Column(
-                      children: (widget.post.totalComment > 3
+                      children: (widget.post.comment.length > 3
                               ? widget.post.comment.sublist(0, 3)
                               : widget.post.comment)
                           .map((comment) {
@@ -241,9 +241,7 @@ class _ItemPostState extends State<ItemPost> with TickerProviderStateMixin {
                         ),
                         child: Center(
                           child: Text(
-                            widget.post.user.fullname
-                                .substring(0, 1)
-                                .toUpperCase(),
+                            user.fullname.substring(0, 1).toUpperCase(),
                             style: Themes().whiteBold14,
                           ),
                         ),
