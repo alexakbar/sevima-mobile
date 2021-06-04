@@ -15,7 +15,7 @@ class PostProvider with ChangeNotifier {
   RefreshController refreshController = RefreshController();
 
   void incrementLike(Post post) {
-    int index = posts.indexOf(post);
+    int index = posts.indexWhere((element) => element.id == post.id);
 
     posts[index].totalLike++;
     posts[index].isLike = true;
@@ -23,7 +23,7 @@ class PostProvider with ChangeNotifier {
   }
 
   void decrementLike(Post post) {
-    int index = posts.indexOf(post);
+    int index = posts.indexWhere((element) => element.id == post.id);
 
     posts[index].totalLike--;
     posts[index].isLike = false;
@@ -55,6 +55,9 @@ class PostProvider with ChangeNotifier {
           }
         }
       },
+      onUnhandleError: (error, response) {
+        print(error);
+      },
     );
   }
 
@@ -83,6 +86,9 @@ class PostProvider with ChangeNotifier {
           }
         }
       },
+      onUnhandleError: (error, response) {
+        print(error);
+      },
     );
   }
 
@@ -105,7 +111,7 @@ class PostProvider with ChangeNotifier {
             PostResponse.fromJson(jsonDecode(response.body));
 
         if (response.statusCode == 200) {
-          int index = posts.indexOf(post);
+          int index = posts.indexWhere((element) => element.id == post.id);
           posts[index] = postResponse.data;
 
           notifyListeners();
@@ -113,6 +119,9 @@ class PostProvider with ChangeNotifier {
             if (onFinish != null) onFinish();
           }
         }
+      },
+      onUnhandleError: (error, response) {
+        print(error);
       },
     );
   }
