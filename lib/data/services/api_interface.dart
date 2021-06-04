@@ -194,6 +194,26 @@ class ApiInterface {
     );
   }
 
+  void deletePost({
+    @required int id,
+    var header,
+    var body,
+    VoidCallback onRequestTimeOut,
+    Function(dynamic error, Response response) onUnhandleError,
+    Function(Response response) onFinish,
+    Function() onOffline,
+  }) {
+    apiHelper.post(
+      route: "post/destroy/$id",
+      body: body,
+      header: header,
+      onFinish: onFinish,
+      onRequestTimeOut: onRequestTimeOut,
+      onUnhandleError: onUnhandleError,
+      onOffline: onOffline,
+    );
+  }
+
   void addPost({
     var body,
     var header,
@@ -204,6 +224,26 @@ class ApiInterface {
   }) {
     apiHelper.multipartPost(
       route: "post/store",
+      body: body,
+      files: files,
+      header: header,
+      onFinish: onFinish,
+      onRequestTimeOut: onRequestTimeOut,
+      onUnhandleError: onUnhandleError,
+    );
+  }
+
+  void editPost({
+    int id,
+    var body,
+    var header,
+    var files,
+    VoidCallback onRequestTimeOut,
+    Function(dynamic error, StreamedResponse response) onUnhandleError,
+    Function(StreamedResponse response) onFinish,
+  }) {
+    apiHelper.multipartPost(
+      route: "post/update/$id",
       body: body,
       files: files,
       header: header,

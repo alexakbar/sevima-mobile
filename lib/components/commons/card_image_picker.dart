@@ -15,6 +15,7 @@ import 'package:permission_handler/permission_handler.dart';
 class CardImagePicker extends StatefulWidget {
   final String hint;
   final bool cameraOnly;
+  final String imageUrl;
   final List<File> currentImages;
   final Function(List<File> images) onImagePicked;
 
@@ -23,6 +24,7 @@ class CardImagePicker extends StatefulWidget {
     this.hint,
     this.currentImages,
     this.onImagePicked,
+    this.imageUrl,
     this.cameraOnly = false,
   }) : super(key: key);
 
@@ -67,6 +69,7 @@ class _CardImagePickerState extends State<CardImagePicker> {
               }).toList(),
             )
           else
+          if(widget.imageUrl == null)
             SizedBox(
               width: 120.w(),
               height: 120.w(),
@@ -95,6 +98,18 @@ class _CardImagePickerState extends State<CardImagePicker> {
                 ),
               ),
             )
+            else
+            ItemImage(
+                  imageUrl: widget.imageUrl,
+                  width: 120.w(),
+                  height: 120.w(),
+                  onTapBadge: () {
+                    setState(() {
+                      
+                      widget.onImagePicked(images);
+                    });
+                  },
+                ).addMarginRight(12.w())
         ],
       ),
     );

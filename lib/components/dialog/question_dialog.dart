@@ -70,7 +70,7 @@ class QuestionDialog extends StatelessWidget {
                       padding: EdgeInsets.symmetric(vertical: 12.h()),
                       onTap: onConfirm,
                       lightButton: false,
-                      color: negativeAction ? Themes.red : Themes.primary,
+                      color: negativeAction ? Themes.primary : Themes.white,
                       text: positiveText,
                     ).addExpanded,
                   ],

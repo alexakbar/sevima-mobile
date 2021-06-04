@@ -16,8 +16,10 @@ import 'package:sevgram/data/providers/post_provider.dart';
 import 'package:sevgram/data/providers/token_provider.dart';
 import 'package:sevgram/data/providers/user_provider.dart';
 import 'package:sevgram/data/services/api_interface.dart';
+import 'package:sevgram/data/services/api_service.dart';
 import 'package:sevgram/data/services/entities/default_response.dart';
 import 'package:sevgram/data/services/entities/login_response.dart';
+import 'package:sevgram/data/services/entities/posts_response.dart';
 import 'package:sevgram/ui/home/home_screen.dart';
 import 'package:sevgram/ui/register/register_screen.dart';
 import 'package:sevgram/utils/responsive.dart';
@@ -26,7 +28,8 @@ import 'package:sevgram/utils/tools.dart';
 import 'package:sevgram/utils/widget_helper.dart';
 
 class CreatePostScreen extends StatefulWidget {
-  CreatePostScreen({Key key}) : super(key: key);
+  final Post post;
+  CreatePostScreen({Key key, this.post}) : super(key: key);
 
   @override
   _CreatePostScreenState createState() => _CreatePostScreenState();
@@ -99,10 +102,72 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
     );
   }
 
+  void editPost() {
+    Map<String, String> files = HashMap();
+    Map<String, String> headers = HashMap();
+    Map<String, String> body = HashMap();
+    body["text"] = captionController.text;
+    if (selectedImages.length > 0) {
+      files["image"] = selectedImages[0].path;
+    }
+    headers["Authorization"] = "Bearer " + context.read<TokenProvider>().token;
+    headers["Content-Type"] = "multipart/form-data";
+    body["is_turn_of_comment"] = isTurnOffComment ? "1" : "0";
+    body["is_turn_of_like"] = hideLikeAndView ? "1" : "0";
+    apiInterface.editPost(
+      body: body,
+      header: headers,
+      files: files,
+      id: widget.post.id,
+      onFinish: (response) async {
+        Navigator.pop(context);
+        var responseData = await response.stream.toBytes();
+        var responseString = String.fromCharCodes(responseData);
+        DefaultResponse defaultResponse =
+            DefaultResponse.fromJson(json.decode(responseString));
+        if (response.statusCode == 200) {
+          for (String path in files.values) {
+            if (File(path).existsSync()) {
+              File(path).deleteSync();
+            }
+          }
+          context.read<PostProvider>().getPosts(context);
+          await showDialog<String>(
+            barrierDismissible: false,
+            context: context,
+            builder: (context) => CustomAlertDialog(
+              title: "Success",
+              message: defaultResponse.message,
+              buttonText: "OK",
+              onConfirm: () {
+                Navigator.pop(context);
+              },
+            ),
+          ).then((v) {
+            Navigator.pop(context);
+          });
+        } else {
+          Navigator.pop(context);
+          Tools.showCustomDialog(
+            context,
+            child: CustomAlertDialog(
+              title: "Error",
+              message: defaultResponse.message,
+              buttonText: "Dismiss",
+              onConfirm: () {
+                Navigator.pop(context);
+              },
+            ),
+          );
+        }
+      },
+    );
+  }
+
   void onTextChange() {
     setState(() {
-      enableButton =
-          captionController.text.isNotEmpty && selectedImages.length > 0;
+      enableButton = captionController.text.isNotEmpty &&
+          (selectedImages.length > 0 || widget.post.image != null);
     });
   }
 
@@ -111,6 +176,11 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
     super.initState();
     SchedulerBinding.instance.addPostFrameCallback((_) {
       apiInterface = ApiInterface(context);
+      captionController.text = widget.post.text;
+      isTurnOffComment = widget.post.isTurnOfComment == 1 ? true : false;
+      hideLikeAndView = widget.post.isTurnOfLike == 1 ? true : false;
+      enableButton = true;
+      setState(() {});
     });
 
     captionController.addListener(onTextChange);
@@ -128,7 +198,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
     return Scaffold(
       appBar: DefaultAppBar(
         height: 66.h(),
-        title: "Add Post",
+        title: widget.post != null ? "Edit Post" : "Add Post",
         action: Builder(builder: (context) {
           return Container(
             width: 24.w(),
@@ -157,6 +227,8 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   CardImagePicker(
+                    currentImages: selectedImages,
+                    imageUrl: ApiService.imageUrl + widget.post.image,
                     onImagePicked: (List<File> images) {
                       setState(() {
                         selectedImages = images;
@@ -214,7 +286,11 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                 enable: enableButton,
                 onTap: () {
                   Tools.showProgressDialog(context);
-                  addPost();
+                  if (widget.post != null) {
+                    editPost();
+                  } else {
+                    addPost();
+                  }
                 },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,

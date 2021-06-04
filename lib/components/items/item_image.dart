@@ -13,12 +13,14 @@ class ItemImage extends StatelessWidget {
   final double height;
   final VoidCallback onTapBadge;
   final File image;
+  final String imageUrl;
 
   const ItemImage({
     Key key,
     this.width,
     this.height,
     this.onTapBadge,
+    this.imageUrl,
     this.image,
   }) : super(key: key);
 
@@ -55,12 +57,15 @@ class ItemImage extends StatelessWidget {
                   height: 56.w(),
                   fit: BoxFit.cover,
                 )
-              : Image.asset(
-                  AssetImages.placeholder,
-                  width: 56.w(),
-                  height: 56.w(),
-                  fit: BoxFit.cover,
-                ),
+              : imageUrl != null
+                  ? Image.network(imageUrl,
+                      width: 56.w(), height: 56.w(), fit: BoxFit.cover)
+                  : Image.asset(
+                      AssetImages.placeholder,
+                      width: 56.w(),
+                      height: 56.w(),
+                      fit: BoxFit.cover,
+                    ),
         ),
       ),
     );
