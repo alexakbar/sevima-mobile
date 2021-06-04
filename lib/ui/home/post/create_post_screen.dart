@@ -55,6 +55,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
       header: headers,
       files: files,
       onFinish: (response) async {
+        Navigator.pop(context);
         var responseData = await response.stream.toBytes();
         var responseString = String.fromCharCodes(responseData);
         DefaultResponse defaultResponse =

@@ -44,6 +44,8 @@ class Post {
     this.id,
     this.image,
     this.text,
+    this.isTurnOfComment,
+    this.isTurnOfLike,
     this.totalLike,
     this.likers,
     this.totalComment,
@@ -55,6 +57,8 @@ class Post {
   int id;
   String image;
   String text;
+  int isTurnOfComment;
+  int isTurnOfLike;
   int totalLike;
   List<User> likers;
   int totalComment;
@@ -67,6 +71,11 @@ class Post {
         isLike: json["is_like"] == null ? null : json["is_like"],
         image: json["image"] == null ? null : json["image"],
         text: json["text"] == null ? null : json["text"],
+        isTurnOfComment: json["is_turn_of_comment"] == null
+            ? null
+            : json["is_turn_of_comment"],
+        isTurnOfLike:
+            json["is_turn_of_like"] == null ? null : json["is_turn_of_like"],
         totalLike: json["total_like"] == null ? null : json["total_like"],
         likers: json["likers"] == null
             ? null
@@ -85,6 +94,8 @@ class Post {
         "is_like": isLike == null ? null : isLike,
         "image": image == null ? null : image,
         "text": text == null ? null : text,
+        "is_turn_of_comment": isTurnOfComment == null ? null : isTurnOfComment,
+        "is_turn_of_like": isTurnOfLike == null ? null : isTurnOfLike,
         "total_like": totalLike == null ? null : totalLike,
         "likers": likers == null
             ? null

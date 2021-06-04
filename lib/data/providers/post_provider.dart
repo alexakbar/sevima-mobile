@@ -10,9 +10,12 @@ import 'package:sevgram/data/services/entities/posts_response.dart';
 
 class PostProvider with ChangeNotifier {
   bool loading = true;
+  bool loadingMypost = true;
   List<Post> posts = [];
+  List<Post> myPosts = [];
   ApiInterface apiInterface;
   RefreshController refreshController = RefreshController();
+  RefreshController refreshMypostController = RefreshController();
 
   void incrementLike(Post post) {
     int index = posts.indexWhere((element) => element.id == post.id);
@@ -150,6 +153,40 @@ class PostProvider with ChangeNotifier {
         if (response.statusCode == 200) {
           posts.clear();
           posts.addAll(postsResponse.data);
+          notifyListeners();
+          if (reset) {
+            if (onFinish != null) onFinish();
+          }
+        }
+      },
+      onUnhandleError: (error, response) {
+        print(error);
+      },
+    );
+  }
+
+  void getMyPost(
+    BuildContext context, {
+    bool reset = true,
+    VoidCallback onFinish,
+  }) {
+    if (apiInterface == null) apiInterface = ApiInterface(context);
+
+    Map<String, String> headers = Map();
+    headers["Authorization"] = "Bearer " + context.read<TokenProvider>().token;
+
+    apiInterface.getMyPost(
+      header: headers,
+      onFinish: (response) {
+        refreshMypostController.loadComplete();
+        refreshMypostController.refreshCompleted();
+        loadingMypost = false;
+        PostsResponse postsResponse =
+            PostsResponse.fromJson(jsonDecode(response.body));
+
+        if (response.statusCode == 200) {
+          myPosts.clear();
+          myPosts.addAll(postsResponse.data);
           notifyListeners();
           if (reset) {
             if (onFinish != null) onFinish();

@@ -159,6 +159,23 @@ class ApiInterface {
     );
   }
 
+   void getMyPost({
+    var header,
+    VoidCallback onRequestTimeOut,
+    Function(dynamic error, Response response) onUnhandleError,
+    Function(Response response) onFinish,
+    Function() onOffline,
+  }) {
+    apiHelper.get(
+      route: "profile/gallery-vertical",
+      header: header,
+      onFinish: onFinish,
+      onRequestTimeOut: onRequestTimeOut,
+      onUnhandleError: onUnhandleError,
+      onOffline: onOffline,
+    );
+  }
+
   void doGetPostById({
     @required int id,
     var header,

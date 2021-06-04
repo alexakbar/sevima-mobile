@@ -7,7 +7,6 @@ import 'package:sevgram/components/dialog/question_dialog.dart';
 import 'package:sevgram/data/providers/token_provider.dart';
 import 'package:sevgram/data/providers/user_provider.dart';
 import 'package:sevgram/data/services/entities/login_response.dart';
-import 'package:sevgram/r.dart';
 import 'package:sevgram/ui/home/pages/home_page.dart';
 import 'package:sevgram/ui/home/pages/profile_page.dart';
 import 'package:sevgram/ui/home/post/create_post_screen.dart';
