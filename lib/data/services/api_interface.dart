@@ -30,6 +30,44 @@ class ApiInterface {
     );
   }
 
+  void getComments({
+    var body,
+    var header,
+    VoidCallback onRequestTimeOut,
+    Function(dynamic error, Response response) onUnhandleError,
+    Function(Response response) onFinish,
+    Function() onOffline,
+  }) {
+    apiHelper.post(
+      route: "post/list-comment",
+      body: body,
+      header: header,
+      onFinish: onFinish,
+      onRequestTimeOut: onRequestTimeOut,
+      onUnhandleError: onUnhandleError,
+      onOffline: onOffline,
+    );
+  }
+
+  void createComment({
+    var body,
+    var header,
+    VoidCallback onRequestTimeOut,
+    Function(dynamic error, Response response) onUnhandleError,
+    Function(Response response) onFinish,
+    Function() onOffline,
+  }) {
+    apiHelper.post(
+      route: "post/comment",
+      body: body,
+      header: header,
+      onFinish: onFinish,
+      onRequestTimeOut: onRequestTimeOut,
+      onUnhandleError: onUnhandleError,
+      onOffline: onOffline,
+    );
+  }
+
   void doLikePost({
     var body,
     var header,

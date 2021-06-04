@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sevgram/data/providers/comment_provider.dart';
 import 'package:sevgram/data/providers/post_provider.dart';
 import 'package:sevgram/data/providers/token_provider.dart';
 import 'package:sevgram/data/providers/user_provider.dart';
@@ -14,6 +15,7 @@ void main() {
         ChangeNotifierProvider(create: (_) => TokenProvider()),
         ChangeNotifierProvider(create: (_) => UserProvider()),
         ChangeNotifierProvider(create: (_) => PostProvider()),
+        ChangeNotifierProvider(create: (_) => CommentProvider()),
       ],
     ),
   );

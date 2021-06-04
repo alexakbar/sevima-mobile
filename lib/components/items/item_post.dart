@@ -212,7 +212,7 @@ class _ItemPostState extends State<ItemPost> with TickerProviderStateMixin {
                     ),
                   if (widget.post.totalComment > 0)
                     Column(
-                      children: (widget.post.totalComment > 3
+                      children: (widget.post.comment.length > 3
                               ? widget.post.comment.sublist(0, 3)
                               : widget.post.comment)
                           .map((comment) {
