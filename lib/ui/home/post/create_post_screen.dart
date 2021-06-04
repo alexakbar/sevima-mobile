@@ -228,7 +228,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                 children: [
                   CardImagePicker(
                     currentImages: selectedImages,
-                    imageUrl: ApiService.imageUrl + widget.post.image,
+                    imageUrl: widget.post != null ? ApiService.imageUrl + widget.post.image : null,
                     onImagePicked: (List<File> images) {
                       setState(() {
                         selectedImages = images;
