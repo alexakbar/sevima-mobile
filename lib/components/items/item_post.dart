@@ -210,7 +210,7 @@ class _ItemPostState extends State<ItemPost> with TickerProviderStateMixin {
                       "See all ${widget.post.totalComment} comments",
                       style: Themes().gray14,
                     ),
-                  if (widget.post.totalLike > 0)
+                  if (widget.post.totalComment > 0)
                     Column(
                       children: (widget.post.totalComment > 3
                               ? widget.post.comment.sublist(0, 3)
